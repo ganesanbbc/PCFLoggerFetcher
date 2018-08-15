@@ -9,11 +9,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class BootReadingPcfLogsFinalApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BootReadingPcfLogsFinalApplication.class, args);
-	}
-	
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(BootReadingPcfLogsFinalApplication.class);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BootReadingPcfLogsFinalApplication.class, args);
+    }
+
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(BootReadingPcfLogsFinalApplication.class);
+    }
 }

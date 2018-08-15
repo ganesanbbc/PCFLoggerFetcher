@@ -1,14 +1,7 @@
 package com.pcf.readlog.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CountDownLatch;
-
-import javax.annotation.PostConstruct;
-
+import com.pcf.readlog.AppConfiguration;
+import com.pcf.readlog.model.PcfAppDetails;
 import org.cloudfoundry.operations.DefaultCloudFoundryOperations;
 import org.cloudfoundry.operations.applications.ApplicationEvent;
 import org.cloudfoundry.operations.applications.ApplicationSummary;
@@ -23,10 +16,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.pcf.readlog.AppConfiguration;
-import com.pcf.readlog.model.PcfAppDetails;
 import reactor.core.publisher.Flux;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 
 @Service
 public class PcfLogService {
@@ -219,7 +217,7 @@ public class PcfLogService {
                 e.printStackTrace();
             }
         }
-        System.out.println("EVENT:::::::"+events);
+        System.out.println("EVENT:::::::" + events);
         return events;
     }
 
