@@ -50,11 +50,11 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle build
+      - run: ls -l
       - persist_to_workspace:
           root: build/libs
           paths:
             - *.jar
-
   release:
     docker:
       - image: circleci/golang:1.8
