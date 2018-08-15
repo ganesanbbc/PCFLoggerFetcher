@@ -2,33 +2,28 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-defaults: &defaults
-  working_directory: /tmp
-  docker:
-    - image: buildpack-deps:jessie
-
 version: 2
 jobs:
-  test:
-    docker:
-      - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
-    environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          - v1-dependencies-
-
-      - run: gradle dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle test
+#  test:
+#    docker:
+#      - image: circleci/openjdk:8-jdk
+#    working_directory: ~/repo
+#    environment:
+#      JVM_OPTS: -Xmx3200m
+#      TERM: dumb
+#    steps:
+#      - checkout
+#      - restore_cache:
+#          keys:
+#          - v1-dependencies-{{ checksum "build.gradle" }}
+#          - v1-dependencies-
+#
+#      - run: gradle dependencies
+#      - save_cache:
+#          paths:
+#            - ~/.gradle
+#          key: v1-dependencies-{{ checksum "build.gradle" }}
+#      - run: gradle test
   build:
     docker:
       - image: circleci/openjdk:8-jdk
@@ -64,23 +59,23 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: /tmp/build/libs
+          at: /build/libs
       - run:
           name: "Publish Release on GitHub"
           command: |
             go get github.com/tcnksm/ghr
             VERSION=1.0
-            ghr -t ${GITHUB_TOKEN} -u ganesanbbc -r PCFLoggerFetcher -c ${CIRCLE_SHA1} -delete ${VERSION} /tmp/build/libs
+            ghr -t ${GITHUB_TOKEN} -u ganesanbbc -r PCFLoggerFetcher -c ${CIRCLE_SHA1} -delete ${VERSION} /build/libs
 
 workflows:
  version: 2
 
  my_workflow:
   jobs:
-    - test
+#    - test
     - build:
-        requires:
-          - test
+#        requires:
+#          - test
     - release:
         requires:
           - build
