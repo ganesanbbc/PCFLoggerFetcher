@@ -4,33 +4,39 @@
 #
 version: 2
 jobs:
-  checkout:
+  StaticCodeAnalysis:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'checkout Source'
-  pmd:
+  UI_Test:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'Source Analysis '
-  unit_test:
+  Run_Unit_Tests:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'Run all Unit Tests'
-  securitycheck:
+  SecurityCheck:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'Source Analysis '
-  it:
+  BDD:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'Source Analysis '
 
-  dev_release:
+  DevRelease:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run: echo 'Source Analysis '
+
+  IntRelease:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
@@ -60,7 +66,7 @@ jobs:
           root: build
           paths:
             - libs
-  release:
+  artifact:
     docker:
       - image: circleci/golang:1.8
     steps:
@@ -77,23 +83,26 @@ workflows:
 
  my_workflow:
   jobs:
-    - checkout
-    - pmd
-    - unit_test
-    - securitycheck:
+    - StaticCodeAnalysis
+    - Run_UI_Test
+    - Run_Unit_Tests
+    - SecurityCheck:
         requires:
-          - unit_test
+          - Run_Unit_Tests
     - build:
         requires:
-          - securitycheck
-    - dev_release:
+          - SecurityCheck
+    - DevRelease:
         requires:
-          - securitycheck
-    - it:
+          - SecurityCheck
+    - BDD:
         requires:
-          - dev_release
-    - release:
+          - DevRelease
+    - artifact:
         requires:
-          - it
+          - BDD
+    - IntRelease:
+        requires:
+          - artifact
 
 
