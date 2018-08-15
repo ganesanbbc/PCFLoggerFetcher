@@ -45,9 +45,9 @@ jobs:
       - run: gradle build
       - run: ls -l
       - persist_to_workspace:
-          root: build/libs
+          root: build
           paths:
-            - *.jar
+            - libs
   release:
     docker:
       - image: circleci/golang:1.8
