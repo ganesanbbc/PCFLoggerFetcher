@@ -34,17 +34,7 @@ jobs:
 
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          - v1-dependencies-
 
-      - run: gradle dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle build
 #  release:
 #      docker:
 #        - image: circleci/openjdk:8-jdk
@@ -73,7 +63,7 @@ workflows:
  my_workflow:
   jobs:
     - test
-    - build
+    - build:
         requires:
           - test
 #    - release
