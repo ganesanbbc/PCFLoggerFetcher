@@ -37,7 +37,7 @@ jobs:
     steps:
       - run: echo 'Source Analysis '
 
-  IntRelease:
+  Release:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
@@ -106,7 +106,7 @@ workflows:
     - Artifact:
         requires:
           - BDD
-    - IntRelease:
+    - Release:
         requires:
           - Artifact
 
