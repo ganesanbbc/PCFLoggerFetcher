@@ -4,14 +4,13 @@
 #
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
     steps:
       - checkout
       - restore_cache:
@@ -25,7 +24,7 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle test
-  build1:
+  build:
       docker:
         - image: circleci/openjdk:8-jdk
       working_directory: ~/repo
@@ -46,12 +45,39 @@ jobs:
               - ~/.gradle
             key: v1-dependencies-{{ checksum "build.gradle" }}
         - run: gradle test
+  release:
+      docker:
+        - image: circleci/openjdk:8-jdk
+      working_directory: ~/repo
+      environment:
+        JVM_OPTS: -Xmx3200m
+        TERM: dumb
+
+      steps:
+        - checkout
+        - restore_cache:
+            keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+
+        - run: gradle dependencies
+        - save_cache:
+            paths:
+              - ~/.gradle
+            key: v1-dependencies-{{ checksum "build.gradle" }}
+        - run: gradle test
+
 workflows:
  version: 2
 
  my_workflow:
   jobs:
+    - test
     - build
-    - build1
+        requires:
+          - test
+    - release
+        requires:
+          - build
 
 
