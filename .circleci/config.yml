@@ -29,6 +29,13 @@ jobs:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'Source Analysis '
+
+  dev_release:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run: echo 'Source Analysis '
+
   build:
     docker:
       - image: circleci/openjdk:8-jdk
@@ -79,9 +86,12 @@ workflows:
     - build:
         requires:
           - securitycheck
+    - dev_release:
+        requires:
+          - securitycheck
     - it:
         requires:
-          - build
+          - dev_release
     - release:
         requires:
           - it
