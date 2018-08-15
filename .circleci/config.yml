@@ -58,7 +58,7 @@ jobs:
           command: |
             go get github.com/tcnksm/ghr
             VERSION=1.1
-            ghr -t 6c1865243acaaa3565770f29948de64ac3182b1f -u ganesanbbc -r PCFLoggerFetcher -c ${CIRCLE_SHA1} -delete ${VERSION} /
+            ghr -t 6c1865243acaaa3565770f29948de64ac3182b1f -u ganesanbbc -r PCFLoggerFetcher ${VERSION} /
 
 workflows:
  version: 2
