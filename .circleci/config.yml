@@ -31,21 +31,19 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
     steps:
       - checkout
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "build.gradle" }}
           - v1-dependencies-
-
       - run: gradle dependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle build
-      - run: ls -l
+#      - run: ls -l
 #      - persist_to_workspace:
 #          root: build/libs
 #          paths:
@@ -73,7 +71,7 @@ workflows:
  my_workflow:
   jobs:
 #    - test
-    - build:
+    - build
 #        requires:
 #          - test
     - release:
