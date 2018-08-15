@@ -65,7 +65,6 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/build/libs
-      - checkout
       - run:
           name: "Publish Release on GitHub"
           command: |
