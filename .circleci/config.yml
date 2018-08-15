@@ -99,6 +99,7 @@ workflows:
     - BDD:
         requires:
           - DevRelease
+          - build
     - artifact:
         requires:
           - BDD
