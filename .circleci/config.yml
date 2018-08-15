@@ -43,7 +43,7 @@ jobs:
     steps:
       - run: echo 'Source Analysis '
 
-  build:
+  Build:
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
@@ -67,7 +67,7 @@ jobs:
           root: build
           paths:
             - libs
-  artifact:
+  Artifact:
     docker:
       - image: circleci/golang:1.8
     steps:
@@ -90,7 +90,9 @@ workflows:
     - SecurityCheck:
         requires:
           - Run_Unit_Tests
-    - build:
+          - StaticCodeAnalysis
+          - Run_UI_Test
+    - Build:
         requires:
           - SecurityCheck
     - DevRelease:
@@ -99,12 +101,12 @@ workflows:
     - BDD:
         requires:
           - DevRelease
-          - build
-    - artifact:
+          - Build
+    - Artifact:
         requires:
           - BDD
     - IntRelease:
         requires:
-          - artifact
+          - Artifact
 
 
