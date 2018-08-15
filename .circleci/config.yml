@@ -9,7 +9,7 @@ jobs:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'checkout Source'
-  UI_Test:
+  Run_UI_Test:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
@@ -19,6 +19,7 @@ jobs:
       - image: circleci/openjdk:8-jdk
     steps:
       - run: echo 'Run all Unit Tests'
+
   SecurityCheck:
     docker:
       - image: circleci/openjdk:8-jdk
