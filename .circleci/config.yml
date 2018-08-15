@@ -4,26 +4,31 @@
 #
 version: 2
 jobs:
-#  test:
-#    docker:
-#      - image: circleci/openjdk:8-jdk
-#    working_directory: ~/repo
-#    environment:
-#      JVM_OPTS: -Xmx3200m
-#      TERM: dumb
-#    steps:
-#      - checkout
-#      - restore_cache:
-#          keys:
-#          - v1-dependencies-{{ checksum "build.gradle" }}
-#          - v1-dependencies-
-#
-#      - run: gradle dependencies
-#      - save_cache:
-#          paths:
-#            - ~/.gradle
-#          key: v1-dependencies-{{ checksum "build.gradle" }}
-#      - run: gradle test
+  checkout:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run: echo 'checkout Source'
+  pmd:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run: echo 'Source Analysis '
+  unit_test:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run: echo 'Run all Unit Tests'
+  securitycheck:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run: echo 'Source Analysis '
+  it:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run: echo 'Source Analysis '
   build:
     docker:
       - image: circleci/openjdk:8-jdk
@@ -53,24 +58,32 @@ jobs:
       - image: circleci/golang:1.8
     steps:
       - run: ls -l
-      - run:
-          name: "Publish Release on GitHub"
-          command: |
-            go get github.com/tcnksm/ghr
-            VERSION=1.1
-            ghr -t 6c1865243acaaa3565770f29948de64ac3182b1f -u ganesanbbc -r PCFLoggerFetcher ${VERSION} /
+#      - run:
+#          name: "Publish Release on GitHub"
+#          command: |
+#            go get github.com/tcnksm/ghr
+#            VERSION=1.1
+#            ghr -t 6c1865243acaaa3565770f29948de64ac3182b1f -u ganesanbbc -r PCFLoggerFetcher ${VERSION} /
 
 workflows:
  version: 2
 
  my_workflow:
   jobs:
-#    - test
-    - build
-#        requires:
-#          - test
-    - release:
+    - checkout
+    - pmd
+    - unit_test
+    - securitycheck:
+        requires:
+          - unit_test
+    - build:
+        requires:
+          - securitycheck
+    - it:
         requires:
           - build
+    - release:
+        requires:
+          - it
 
 
