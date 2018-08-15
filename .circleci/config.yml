@@ -2,6 +2,11 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
+defaults: &defaults
+  working_directory: /tmp
+  docker:
+    - image: buildpack-deps:jessie
+
 version: 2
 jobs:
 #  test:
